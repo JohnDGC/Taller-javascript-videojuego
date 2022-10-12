@@ -29,6 +29,13 @@ canvas {
   width: 100%;
 }
 
+.btns #reload {
+  position: absolute;
+  bottom: 30px;
+  right: 30%;
+  width: auto;
+}
+
 button {
   background-color: #fdef05;
   border-radius: 8px;
@@ -57,9 +64,20 @@ p {
   width: 100%;
 }
 
+@media (max-width: 540px) {
+  .btns #reload {
+    right: 20%;
+    bottom: 8%;
+  }
+}
+
 @media (max-width: 440px) {
   button {
     margin-top: 10px;
+  }
+  .btns #reload {
+    right: 5%;
+    bottom: 8%;
   }
 
   #up,

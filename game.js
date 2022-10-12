@@ -4,6 +4,8 @@ const btnUp = document.querySelector('#up');
 const btnDown = document.querySelector('#down');
 const btnRight = document.querySelector('#right');
 const btnLeft = document.querySelector('#left');
+const btnReload = document.querySelector('#reload');
+const btnRecord = document.querySelector('#delete_record');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time')
 const spanRecord = document.querySelector('#record')
@@ -37,6 +39,8 @@ let flag = true;
 window.addEventListener('load', setCanvasSize);
 // window.addEventListener("resize", startGame);
 window.onresize = setCanvasSize;
+btnReload.addEventListener('click', reloadButton);
+btnRecord.addEventListener('click', recordButton);
 
 function setCanvasSize() {
   // let canvasSize = Math.min(window.innerHeight, window.innerWidth)*0.65;
@@ -139,6 +143,10 @@ function movePlayer() {
   }
   if (enemyCollision) {
     levelFail();
+    // if (lives < 1) {
+    //   showCollision();
+    //   setTimeout(levelFail, 2000)
+    // }
   }
 
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
@@ -156,9 +164,9 @@ function levelFail() {
 
   console.log('lives: '+lives)
   if (lives <= 0) {
-    level = 0;
-    lives = 3;
-    timeStart = undefined;
+    clearInterval(timeInterval);
+    setTimeout(showCollision, 100);
+    
   }
   playerPosition.x = undefined;
   playerPosition.y = undefined;
@@ -202,6 +210,38 @@ function showTime() {
 
 function showRecord() {
   spanRecord.innerHTML = localStorage.getItem('record')
+}
+
+function showCollision() {
+  clearInterval(timeInterval);
+  level = 0;
+  lives = 3;
+  timeStart = undefined;
+  game.clearRect(0, 0, canvasSize, canvasSize);
+  game.font = "10px Verdana";
+  game.textAlign = "center";
+  // if (lives > 1) {
+  //   game.fillText(
+  //     "PERDISTE UNA VIDA, VUELVE A INTENTARLO",
+  //     canvasSize / 2,
+  //     canvasSize / 2
+  //   );
+  // } else {
+    game.fillText(
+      "PERDISTE TODAS LAS VIDAS, REINICIA O TOCA UNA TECLA",
+      canvasSize / 2,
+      canvasSize / 2
+    );
+  // }
+}
+
+function reloadButton() {
+  location.reload();
+}
+
+function recordButton() {
+  localStorage.removeItem('record');
+  spanRecord.innerHTML = '0.00';
 }
 
 window.addEventListener('keydown', moveKeys);
